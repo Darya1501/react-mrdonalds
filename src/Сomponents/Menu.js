@@ -7,6 +7,7 @@ import bannerImg from '../images/banner.png'
 
 const MenuStyled = styled.main`
   margin-top: 80px;
+  margin-left: 380px;
 `;
 
 const MenuBanner = styled.div`
