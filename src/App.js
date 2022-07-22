@@ -1,9 +1,9 @@
 import React from 'react';
-import { GlobalStyle } from './Сomponents/GlobalStyle';
-import { NavBar } from './Сomponents/NavBar';
-import { Menu } from './Сomponents/Menu';
-import { ModalItem } from './Сomponents/ModalItem';
-import { Order } from './Сomponents/Order';
+import { GlobalStyle } from './Сomponents/Style/GlobalStyle';
+import { NavBar } from './Сomponents/NavBar/NavBar';
+import { Menu } from './Сomponents/Menu/Menu';
+import { ModalItem } from './Сomponents/Modal/ModalItem';
+import { Order } from './Сomponents/Order/Order';
 import { useOpenItem } from './Сomponents/Hooks/useOpenItem'
 import { useOrders } from './Сomponents/Hooks/useOrders'
 
