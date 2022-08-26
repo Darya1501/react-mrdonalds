@@ -4,6 +4,9 @@ import { ButtonCheckout } from '../Style/ButtonCheckout';
 import { OrderListItem } from './OrderListItem';
 import { totalPriceItems } from '../Functions/secondaryFunction';
 import { formatCurrency } from '../Functions/secondaryFunction';
+import { projection } from '../Functions/secondaryFunction';
+import { ref, set } from 'firebase/database';
+
 
 const OrderStyles = styled.section`
   position: fixed;
@@ -21,7 +24,7 @@ const OrderStyles = styled.section`
 const OrderTitle = styled.h2`
   text-align: center;
   margin-bottom: 30px;
-  `;
+`;
 
 const OrderContent = styled.div`
   flex-grow: 1;
@@ -47,8 +50,28 @@ const EmptyList = styled.p`
   text-align: center;
 `;
 
+const rulesData = {
+  name: ['name'],
+  price: ['price'],
+  count: ['count'],
+  toppungs: ['topping', arr => arr.filter(obj => obj.checked).map(obj => obj.name)],
+  choices: ['choice', item => item ? item : 'no choices']
+}
 
-export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn }) => {
+export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn, firebaseDatabase }) => {
+
+  const database = firebaseDatabase();
+
+  const sendOrder = () => {
+    const newOrder = orders.map(projection(rulesData));
+    const orderID = Math.floor(Math.random() * 10000000000000000);
+    set(ref(database, 'orders/' + orderID), {
+      nameClient: authentication.displayName,
+      email: authentication.email,
+      order: newOrder
+    });
+    setOrders([]);
+  }
   
   const total = orders.reduce((result, order) =>
     totalPriceItems(order) + result, 0);
@@ -82,6 +105,6 @@ export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn })
         <span>{totalCounter}</span>
         <TotalPrice>{ formatCurrency(total) }</TotalPrice>
       </Total>
-      <ButtonCheckout onClick={() => authentication ? console.log(orders) : logIn() }>Оформить</ButtonCheckout>
+      <ButtonCheckout onClick={() => authentication ? sendOrder() : logIn() }>Оформить</ButtonCheckout>
     </OrderStyles>
 )}

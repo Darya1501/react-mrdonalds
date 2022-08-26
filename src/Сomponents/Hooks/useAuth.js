@@ -13,7 +13,6 @@ export function useAuth(authFirebase) {
 
   useEffect(() => {
     onAuthStateChanged(auth, user => {
-      console.log(user);
       if (user) {
         setauthentication(user);
       } else {
