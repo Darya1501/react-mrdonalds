@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ListItem } from './ListItem';
-import bannerImg from '../../images/banner.png'
+import bannerImg from '../../images/banner.png';
 import { useFetch } from '../Hooks/useFetch';
-
 
 const MenuStyled = styled.main`
   margin-top: 80px;
@@ -23,7 +22,7 @@ const SectionMenu = styled.section`
 `;
 
 
-export const Menu = ({ setOpenItem }) => {
+export const Menu = () => {
 
   const res = useFetch();
   const dbMenu = res.response;
@@ -35,11 +34,11 @@ export const Menu = ({ setOpenItem }) => {
         <>
           <SectionMenu>
             <h2>Бургеры</h2>
-            <ListItem itemList={dbMenu.burger} setOpenItem={setOpenItem} />
+            <ListItem itemList={dbMenu.burger} />
           </SectionMenu>
           <SectionMenu>
             <h2>Закуски / Напитки</h2>
-            <ListItem itemList={dbMenu.other} setOpenItem={setOpenItem} />
+            <ListItem itemList={dbMenu.other} />
           </SectionMenu>
         </> : res.error ? <div>Произошла ошибка, скоро исправим</div> : <div>Загрузка...</div>
       }
