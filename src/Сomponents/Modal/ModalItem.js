@@ -10,7 +10,7 @@ import { useToppings } from '../Hooks/useToppings';
 import { Choices } from './Choices';
 import { useChoices } from '../Hooks/useChoices';
 
-const Overlay = styled.div`
+export const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -26,7 +26,6 @@ const Overlay = styled.div`
 const Modal = styled.div`
   background-color: #fff;
   width: 600px;
-  height: 500px;
 `;
 
 const ModalBanner = styled.div`

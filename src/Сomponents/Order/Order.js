@@ -2,10 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ButtonCheckout } from '../Style/ButtonCheckout';
 import { OrderListItem } from './OrderListItem';
-import { totalPriceItems } from '../Functions/secondaryFunction';
-import { formatCurrency } from '../Functions/secondaryFunction';
-import { projection } from '../Functions/secondaryFunction';
-import { ref, set } from 'firebase/database';
+import { totalPriceItems, formatCurrency } from '../Functions/secondaryFunction';
 
 
 const OrderStyles = styled.section`
@@ -21,7 +18,7 @@ const OrderStyles = styled.section`
   padding: 20px;
 `;
 
-const OrderTitle = styled.h2`
+export const OrderTitle = styled.h2`
   text-align: center;
   margin-bottom: 30px;
 `;
@@ -32,7 +29,7 @@ const OrderContent = styled.div`
 
 const OrderList = styled.ul``;
 
-const Total = styled.div`
+export const Total = styled.div`
   display: flex;
   margin: 0 35px 30px;
   & span:first-child {
@@ -40,7 +37,7 @@ const Total = styled.div`
   }
 `;
 
-const TotalPrice = styled.span`
+export const TotalPrice = styled.span`
   text-align: right;
   min-width: 65px;
   margin-left: 20px;
@@ -50,28 +47,14 @@ const EmptyList = styled.p`
   text-align: center;
 `;
 
-const rulesData = {
-  name: ['name'],
-  price: ['price'],
-  count: ['count'],
-  toppungs: ['topping', arr => arr.filter(obj => obj.checked).map(obj => obj.name)],
-  choices: ['choice', item => item ? item : 'no choices']
-}
-
-export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn, firebaseDatabase }) => {
-
-  const database = firebaseDatabase();
-
-  const sendOrder = () => {
-    const newOrder = orders.map(projection(rulesData));
-    const orderID = Math.floor(Math.random() * 10000000000000000);
-    set(ref(database, 'orders/' + orderID), {
-      nameClient: authentication.displayName,
-      email: authentication.email,
-      order: newOrder
-    });
-    setOrders([]);
-  }
+export const Order = ({ 
+    orders, 
+    setOrders, 
+    setOpenItem, 
+    authentication, 
+    logIn, 
+    setOpenOrderConfirm
+  }) => {
   
   const total = orders.reduce((result, order) =>
     totalPriceItems(order) + result, 0);
@@ -105,6 +88,6 @@ export const Order = ({ orders, setOrders, setOpenItem, authentication, logIn, f
         <span>{totalCounter}</span>
         <TotalPrice>{ formatCurrency(total) }</TotalPrice>
       </Total>
-      <ButtonCheckout onClick={() => authentication ? sendOrder() : logIn() }>Оформить</ButtonCheckout>
+      <ButtonCheckout onClick={() => authentication ? setOpenOrderConfirm(true) : logIn() }>Оформить</ButtonCheckout>
     </OrderStyles>
 )}
